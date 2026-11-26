@@ -12,10 +12,10 @@ aloud in Bulgarian (voice: Daria). Everything runs offline.
 ## Setup
 
 ```bash
-cd graditeli-poc   # repo root
+cd mac
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt   # bleak + pytest + ruff
 pytest -q
 ```
 

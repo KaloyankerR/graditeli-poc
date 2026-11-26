@@ -20,7 +20,8 @@ class Speaker:
         self.stop()
         self._proc = subprocess.Popen(
             ["sh", "-c", SAY_THEN_PLAY, self.voice, self._audio, text, f"{volume:.2f}"],
-            start_new_session=True)
+            start_new_session=True,
+        )
 
     def stop(self):
         if self._proc and self._proc.poll() is None:
