@@ -1,4 +1,6 @@
-This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
+This is the "Метро маяк" iPhone app: an Expo / React Native app with one screen ([App.tsx](App.tsx)) and a local
+Swift module ([modules/beacon-scanner](modules/beacon-scanner)) that scans for BLE beacons. It is iOS-only. See
+[README.md](README.md) for build steps and [../HANDOVER.md](../HANDOVER.md) for the background.
 
 ## Expo has changed — do not trust your training data
 
@@ -10,32 +12,29 @@ Expo ships breaking changes every SDK release. APIs you remember are likely rena
 
 ## Commands
 
-Use `bunx` instead of `npx` if the project uses bun (`bun.lock` present).
-
 ```bash
-npx expo install <package>  # ALWAYS use instead of npm/yarn/pnpm/bun add — resolves SDK-compatible versions
-npx expo start              # start the dev server
-npx expo lint               # lint
-npx tsc --noEmit            # typecheck
-npx expo-doctor             # diagnose dependency and config issues
-npx expo install --fix      # fix incompatible package versions
+npx expo install <package>  # ALWAYS use instead of npm install <package>: resolves SDK-compatible versions
+npm run lint                # eslint (eslint-config-expo + prettier)
+npm run format              # prettier --write
+npm run typecheck           # tsc --noEmit
+npm test                    # jest
+npx expo-doctor             # dependency and config issues
 ```
 
-Run lint and typecheck before declaring any task done.
+Run lint, format:check, typecheck and tests before declaring any task done. CI runs the same.
 
-## Navigation & Routing
+## Layout
 
-- Use **Expo Router** for all navigation. Routes live in `src/app/` — every file there is a screen, `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
-- Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`.
-- Docs: https://docs.expo.dev/router/introduction.md
+- `App.tsx`: the whole UI, the timer loop and the tuning constants.
+- `src/zoneEngine.ts`: zone detection. Pure logic, unit-tested, port of `../mac/zone_engine.py`.
+- `src/zones.ts`: beacon instance id → zone name, symbol, instruction. Zones `01`/`02` must match `../mac/zones.json`.
+- `src/distance.ts`, `src/direction.ts`: RSSI → metres estimate, compass helpers.
+- `modules/beacon-scanner/`: Swift CoreBluetooth scanner, compass heading and a small UserDefaults store, exposed to JS as `BeaconScanner`.
 
-## Building with EAS
-
-Use EAS to build, sign, and submit the app in the cloud (`eas build`, `eas submit`) and to ship over-the-air updates (`eas update`) — no local Xcode or Android Studio required. Run EAS CLI as `bunx eas-cli <command>` in Bun projects, or `npx eas-cli@latest <command>` otherwise; substitute that for bare `eas` in docs examples.
-Docs: https://docs.expo.dev/eas/index.md
+Keep logic that can be tested out of `App.tsx` and in `src/`, with a test next to it.
 
 ## Rules
 
-- If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
-- Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
-- Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+- `ios/` is generated (`npx expo prebuild --platform ios`) and not committed. Never edit it by hand. Configure native behaviour in `app.json`, and put native code in `modules/beacon-scanner/`.
+- There is no navigation library and no EAS setup. Builds use `xcodebuild` + `devicectl` (see README).
+- Native changes need a rebuild. Expo Go cannot run this app because of the custom module.
