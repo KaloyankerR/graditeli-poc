@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -6 1466 1126" width="1466" height="1126" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1e1e1e"/></marker></defs>
+<rect x="-16" y="-6" width="1466" height="1126" fill="#ffffff"/>
+<rect x="40" y="120" width="300" height="340" rx="12" fill="none" stroke="#868e96" stroke-width="1"/>
+<rect x="60" y="170" width="260" height="120" rx="12" fill="#ffec99" stroke="#1e1e1e" stroke-width="2"/>
+<rect x="60" y="315" width="260" height="120" rx="12" fill="#ffec99" stroke="#1e1e1e" stroke-width="2"/>
+<rect x="420" y="120" width="660" height="440" rx="12" fill="none" stroke="#868e96" stroke-width="1"/>
+<rect x="440" y="170" width="260" height="150" rx="12" fill="#d0bfff" stroke="#1e1e1e" stroke-width="2"/>
+<rect x="800" y="170" width="260" height="150" rx="12" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2"/>
+<rect x="440" y="400" width="190" height="130" rx="12" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2"/>
+<rect x="650" y="400" width="200" height="130" rx="12" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2"/>
+<rect x="870" y="400" width="190" height="130" rx="12" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2"/>
+<rect x="1180" y="170" width="240" height="150" rx="12" fill="#ffc9c9" stroke="#1e1e1e" stroke-width="2"/>
+<rect x="420" y="620" width="660" height="220" rx="12" fill="none" stroke="#868e96" stroke-width="1"/>
+<rect x="440" y="680" width="190" height="140" rx="12" fill="#b2f2bb" stroke="#1e1e1e" stroke-width="2"/>
+<rect x="650" y="680" width="200" height="140" rx="12" fill="#b2f2bb" stroke="#1e1e1e" stroke-width="2"/>
+<rect x="870" y="680" width="190" height="140" rx="12" fill="#b2f2bb" stroke="#1e1e1e" stroke-width="2"/>
+<rect x="40" y="900" width="660" height="190" rx="12" fill="none" stroke="#868e96" stroke-width="1"/>
+<rect x="60" y="950" width="300" height="120" rx="12" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2"/>
+<rect x="380" y="950" width="300" height="120" rx="12" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2"/>
+<rect x="740" y="920" width="340" height="150" rx="12" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" stroke-dasharray="8 6"/>
+<rect x="1180" y="400" width="240" height="670" rx="12" fill="#ffffff" stroke="#1e1e1e" stroke-width="2" stroke-dasharray="8 6"/>
+<polyline points="326,230.0 434,245.0" fill="none" stroke="#1e1e1e" stroke-width="2" marker-end="url(#ah)"/>
+<polyline points="326,375.0 434,245.0" fill="none" stroke="#1e1e1e" stroke-width="2" marker-end="url(#ah)"/>
+<polyline points="706,245.0 794,245.0" fill="none" stroke="#1e1e1e" stroke-width="2" marker-end="url(#ah)"/>
+<polyline points="930.0,326 535.0,394" fill="none" stroke="#1e1e1e" stroke-width="2" marker-end="url(#ah)"/>
+<polyline points="930.0,326 750.0,394" fill="none" stroke="#1e1e1e" stroke-width="2" marker-end="url(#ah)"/>
+<polyline points="930.0,326 965.0,394" fill="none" stroke="#1e1e1e" stroke-width="2" marker-end="url(#ah)"/>
+<polyline points="1066,245.0 1174,245.0" fill="none" stroke="#1e1e1e" stroke-width="2" marker-end="url(#ah)"/>
+<polyline points="54,230.0 14,230.0 14,750.0 434,750.0" fill="none" stroke="#1e1e1e" stroke-width="2" marker-end="url(#ah)"/>
+<polyline points="636,750.0 644,750.0" fill="none" stroke="#1e1e1e" stroke-width="2" marker-end="url(#ah)"/>
+<polyline points="856,750.0 864,750.0" fill="none" stroke="#1e1e1e" stroke-width="2" marker-end="url(#ah)"/>
+<polyline points="750.0,674 750.0,536" fill="none" stroke="#1e1e1e" stroke-width="2" marker-end="url(#ah)" stroke-dasharray="8 6"/>
+<text x="40" y="54.0" font-size="30" fill="#1e1e1e" text-anchor="start">Graditeli PoC: metro beacon voice navigation</text>
+<text x="40" y="84.0" font-size="16" fill="#495057" text-anchor="start">Components and data flow, 2026-11-26. Dashed = not product code / not built yet.</text>
+<text x="56" y="148.0" font-size="18" fill="#495057" text-anchor="start">Beacons (send only an id)</text>
+<text x="190.0" y="206.0" font-size="16" fill="#1e1e1e" text-anchor="middle" font-weight="bold">Android phone</text>
+<text x="190.0" y="226.0" font-size="16" fill="#1e1e1e" text-anchor="middle">nRF Connect → Advertiser</text>
+<text x="190.0" y="246.0" font-size="16" fill="#1e1e1e" text-anchor="middle">Eddystone-UID (FEAA)</text>
+<text x="190.0" y="266.0" font-size="16" fill="#1e1e1e" text-anchor="middle">instance 0000000000NN</text>
+<text x="190.0" y="351.0" font-size="16" fill="#1e1e1e" text-anchor="middle" font-weight="bold">iPhone</text>
+<text x="190.0" y="371.0" font-size="16" fill="#1e1e1e" text-anchor="middle">nRF Connect → Peripheral</text>
+<text x="190.0" y="391.0" font-size="16" fill="#1e1e1e" text-anchor="middle">service UUID 6D657472…NN</text>
+<text x="190.0" y="411.0" font-size="16" fill="#1e1e1e" text-anchor="middle">(foreground only)</text>
+<text x="436" y="148.0" font-size="18" fill="#495057" text-anchor="start">mobile/  iPhone app «Метро маяк» (Expo SDK 55, iOS only)</text>
+<text x="570.0" y="201.0" font-size="16" fill="#1e1e1e" text-anchor="middle" font-weight="bold">beacon-scanner (Swift)</text>
+<text x="570.0" y="221.0" font-size="16" fill="#1e1e1e" text-anchor="middle">CoreBluetooth scan</text>
+<text x="570.0" y="241.0" font-size="16" fill="#1e1e1e" text-anchor="middle">compass heading</text>
+<text x="570.0" y="261.0" font-size="16" fill="#1e1e1e" text-anchor="middle">UserDefaults settings</text>
+<text x="570.0" y="281.0" font-size="16" fill="#1e1e1e" text-anchor="middle">→ onBeacon / onState /</text>
+<text x="570.0" y="301.0" font-size="16" fill="#1e1e1e" text-anchor="middle">   onHeading</text>
+<text x="930.0" y="211.0" font-size="16" fill="#1e1e1e" text-anchor="middle" font-weight="bold">App.tsx</text>
+<text x="930.0" y="231.0" font-size="16" fill="#1e1e1e" text-anchor="middle">UI + 100 ms loop</text>
+<text x="930.0" y="251.0" font-size="16" fill="#1e1e1e" text-anchor="middle">thresholds, «Задай тук»,</text>
+<text x="930.0" y="271.0" font-size="16" fill="#1e1e1e" text-anchor="middle">auto-speak,</text>
+<text x="930.0" y="291.0" font-size="16" fill="#1e1e1e" text-anchor="middle">direction lock</text>
+<text x="535.0" y="441.0" font-size="16" fill="#1e1e1e" text-anchor="middle" font-weight="bold">src/zones.ts</text>
+<text x="535.0" y="461.0" font-size="16" fill="#1e1e1e" text-anchor="middle">id → name, symbol,</text>
+<text x="535.0" y="481.0" font-size="16" fill="#1e1e1e" text-anchor="middle">instruction</text>
+<text x="535.0" y="501.0" font-size="16" fill="#1e1e1e" text-anchor="middle">(4 demo zones)</text>
+<text x="750.0" y="441.0" font-size="16" fill="#1e1e1e" text-anchor="middle" font-weight="bold">src/zoneEngine.ts</text>
+<text x="750.0" y="461.0" font-size="16" fill="#1e1e1e" text-anchor="middle">upper-half mean</text>
+<text x="750.0" y="481.0" font-size="16" fill="#1e1e1e" text-anchor="middle">enter/exit hysteresis</text>
+<text x="750.0" y="501.0" font-size="16" fill="#1e1e1e" text-anchor="middle">switch margin</text>
+<text x="965.0" y="441.0" font-size="16" fill="#1e1e1e" text-anchor="middle" font-weight="bold">distance.ts</text>
+<text x="965.0" y="461.0" font-size="16" fill="#1e1e1e" text-anchor="middle">direction.ts</text>
+<text x="965.0" y="481.0" font-size="16" fill="#1e1e1e" text-anchor="middle">RSSI → metres (±50%)</text>
+<text x="965.0" y="501.0" font-size="16" fill="#1e1e1e" text-anchor="middle">compass helpers</text>
+<rect x="362.45" y="226.75" width="35.1" height="21.5" fill="#ffffff"/>
+<text x="380.0" y="242.75" font-size="14" fill="#1e1e1e" text-anchor="middle">BLE</text>
+<rect x="720.9" y="234.25" width="58.2" height="21.5" fill="#ffffff"/>
+<text x="750.0" y="250.25" font-size="14" fill="#1e1e1e" text-anchor="middle">events</text>
+<text x="1300.0" y="206.75" font-size="18" fill="#1e1e1e" text-anchor="middle" font-weight="bold">Passenger</text>
+<text x="1300.0" y="229.25" font-size="18" fill="#1e1e1e" text-anchor="middle">hears the instruction</text>
+<text x="1300.0" y="251.75" font-size="18" fill="#1e1e1e" text-anchor="middle">(expo-speech, bg-BG</text>
+<text x="1300.0" y="274.25" font-size="18" fill="#1e1e1e" text-anchor="middle">voice Daria)</text>
+<text x="1300.0" y="296.75" font-size="18" fill="#1e1e1e" text-anchor="middle">sees the zone card</text>
+<rect x="1090.9" y="234.25" width="58.2" height="21.5" fill="#ffffff"/>
+<text x="1120.0" y="250.25" font-size="14" fill="#1e1e1e" text-anchor="middle">speech</text>
+<text x="436" y="648.0" font-size="18" fill="#495057" text-anchor="start">mac/  Python prototype</text>
+<text x="535.0" y="726.0" font-size="16" fill="#1e1e1e" text-anchor="middle" font-weight="bold">main.py + bleak</text>
+<text x="535.0" y="746.0" font-size="16" fill="#1e1e1e" text-anchor="middle">run · calibrate ·</text>
+<text x="535.0" y="766.0" font-size="16" fill="#1e1e1e" text-anchor="middle">debug</text>
+<text x="535.0" y="786.0" font-size="16" fill="#1e1e1e" text-anchor="middle">eddystone.py</text>
+<text x="750.0" y="736.0" font-size="16" fill="#1e1e1e" text-anchor="middle" font-weight="bold">zone_engine.py</text>
+<text x="750.0" y="756.0" font-size="16" fill="#1e1e1e" text-anchor="middle">original logic</text>
+<text x="750.0" y="776.0" font-size="16" fill="#1e1e1e" text-anchor="middle">moving average</text>
+<text x="965.0" y="726.0" font-size="16" fill="#1e1e1e" text-anchor="middle" font-weight="bold">speaker.py</text>
+<text x="965.0" y="746.0" font-size="16" fill="#1e1e1e" text-anchor="middle">say + afplay</text>
+<text x="965.0" y="766.0" font-size="16" fill="#1e1e1e" text-anchor="middle">(voice Daria)</text>
+<text x="965.0" y="786.0" font-size="16" fill="#1e1e1e" text-anchor="middle">zones.json, config.py</text>
+<rect x="164.1" y="739.25" width="119.80000000000001" height="21.5" fill="#ffffff"/>
+<text x="224.0" y="755.25" font-size="14" fill="#1e1e1e" text-anchor="middle">Eddystone only</text>
+<rect x="697.8" y="594.25" width="104.4" height="21.5" fill="#ffffff"/>
+<text x="750.0" y="610.25" font-size="14" fill="#1e1e1e" text-anchor="middle">ported to TS</text>
+<text x="56" y="928.0" font-size="18" fill="#495057" text-anchor="start">GitHub: KaloyankerR/graditeli-poc (private)</text>
+<text x="210.0" y="980.25" font-size="14" fill="#1e1e1e" text-anchor="middle" font-weight="bold">GitHub Actions CI</text>
+<text x="210.0" y="997.75" font-size="14" fill="#1e1e1e" text-anchor="middle">on every PR + push to main</text>
+<text x="210.0" y="1015.25" font-size="14" fill="#1e1e1e" text-anchor="middle">mac: ruff, pytest (3.11, 3.13)</text>
+<text x="210.0" y="1032.75" font-size="14" fill="#1e1e1e" text-anchor="middle">mobile: eslint, prettier, tsc,</text>
+<text x="210.0" y="1050.25" font-size="14" fill="#1e1e1e" text-anchor="middle">jest, expo-doctor</text>
+<text x="530.0" y="980.25" font-size="14" fill="#1e1e1e" text-anchor="middle" font-weight="bold">Docs</text>
+<text x="530.0" y="997.75" font-size="14" fill="#1e1e1e" text-anchor="middle">README.md: layout, quick start</text>
+<text x="530.0" y="1015.25" font-size="14" fill="#1e1e1e" text-anchor="middle">HANDOVER.md: status, limits,</text>
+<text x="530.0" y="1032.75" font-size="14" fill="#1e1e1e" text-anchor="middle">next steps</text>
+<text x="530.0" y="1050.25" font-size="14" fill="#1e1e1e" text-anchor="middle">mobile/AGENTS.md</text>
+<text x="910.0" y="981.0" font-size="16" fill="#1e1e1e" text-anchor="middle" font-weight="bold">video/  (not product code)</text>
+<text x="910.0" y="1001.0" font-size="16" fill="#1e1e1e" text-anchor="middle">demo.html → Playwright + ffmpeg</text>
+<text x="910.0" y="1021.0" font-size="16" fill="#1e1e1e" text-anchor="middle">→ morsy-demo.mp4 (35 s)</text>
+<text x="1300.0" y="618.0" font-size="18" fill="#1e1e1e" text-anchor="middle" font-weight="bold">Next (not built)</text>
+<text x="1300.0" y="640.5" font-size="18" fill="#1e1e1e" text-anchor="middle"></text>
+<text x="1300.0" y="663.0" font-size="18" fill="#1e1e1e" text-anchor="middle">• test in a real station</text>
+<text x="1300.0" y="685.5" font-size="18" fill="#1e1e1e" text-anchor="middle">• dedicated beacon</text>
+<text x="1300.0" y="708.0" font-size="18" fill="#1e1e1e" text-anchor="middle">  hardware</text>
+<text x="1300.0" y="730.5" font-size="18" fill="#1e1e1e" text-anchor="middle">• paid Apple team +</text>
+<text x="1300.0" y="753.0" font-size="18" fill="#1e1e1e" text-anchor="middle">  TestFlight</text>
+<text x="1300.0" y="775.5" font-size="18" fill="#1e1e1e" text-anchor="middle">• iOS build in CI</text>
+<text x="1300.0" y="798.0" font-size="18" fill="#1e1e1e" text-anchor="middle">• zones per station</text>
+<text x="1300.0" y="820.5" font-size="18" fill="#1e1e1e" text-anchor="middle">  as JSON</text>
+<text x="1300.0" y="843.0" font-size="18" fill="#1e1e1e" text-anchor="middle">• background scanning</text>
+<text x="1300.0" y="865.5" font-size="18" fill="#1e1e1e" text-anchor="middle">• Android app</text>
+</svg>

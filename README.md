@@ -13,6 +13,12 @@ Everything runs offline: no server, no internet, no accounts.
                                                                          hysteresis)
 ```
 
+![Architecture: beacons, iPhone app, Mac prototype, repo and CI](docs/architecture.svg)
+
+The editable source is [`docs/architecture.excalidraw`](docs/architecture.excalidraw). Open it at
+[excalidraw.com](https://excalidraw.com) (menu → Open) or with the Excalidraw extension for VS Code.
+After changing it, export it as SVG over `docs/architecture.svg` so this picture stays current.
+
 New to the project? Read [HANDOVER.md](HANDOVER.md) first: it covers what was built, what works,
 the known limitations and the open next steps.
 
