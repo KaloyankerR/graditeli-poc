@@ -1,13 +1,7 @@
 import { NativeModule, requireNativeModule } from 'expo';
 
 export type BeaconEvent = { instance: string; rssi: number };
-export type BluetoothState =
-  | 'poweredOn'
-  | 'poweredOff'
-  | 'unauthorized'
-  | 'unsupported'
-  | 'resetting'
-  | 'unknown';
+export type BluetoothState = 'poweredOn' | 'poweredOff' | 'unauthorized' | 'unsupported' | 'resetting' | 'unknown';
 
 type BeaconScannerModuleEvents = {
   onBeacon: (event: BeaconEvent) => void;

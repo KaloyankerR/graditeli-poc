@@ -100,6 +100,8 @@ export default function App() {
       exitRssi: enterRssi - EXIT_GAP_DB,
     };
     BeaconScanner.setNumber(ENTER_RSSI_KEY, enterRssi);
+    // `engine` is a ref's .current and never changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enterRssi]);
 
   useEffect(() => BeaconScanner.setNumber(AUTO_SPEAK_KEY, autoSpeak ? 1 : 0), [autoSpeak]);
@@ -167,6 +169,9 @@ export default function App() {
       BeaconScanner.stopHeading();
       Speech.stop();
     };
+    // Runs once on mount. `engine` never changes, and `speakZone` and the timer read only refs,
+    // so the first render's copies stay correct.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const zone = snap.zone ? ZONES[snap.zone] : null;

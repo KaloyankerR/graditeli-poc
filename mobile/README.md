@@ -49,4 +49,4 @@ xcrun devicectl device process launch --device <UDID> com.kalo.metrobeacon
 
 ## Checks
 
-`npx tsc --noEmit` · `npm test` · `npx expo-doctor`
+`npm run lint` · `npm run format:check` · `npm run typecheck` · `npm test` · `npx expo-doctor`
