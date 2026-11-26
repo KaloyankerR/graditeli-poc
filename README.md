@@ -7,11 +7,7 @@ Bulgarian, such as *"Стълби надолу, три метра пред ва�
 
 Everything runs offline: no server, no internet, no accounts.
 
-```
- beacon (Eddystone-UID, instance id)  ──BLE──▶  phone: smooth RSSI ─▶ zone engine ─▶ zone ─▶ speech (Bulgarian)
- e.g. 000000000001                                (signal strength)    (enter/exit      "Стълби"
-                                                                         hysteresis)
-```
+## Architecture
 
 ![Architecture: beacons, iPhone app, Mac prototype, repo and CI](docs/architecture.svg)
 
