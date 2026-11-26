@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<title>Morsy — демо</title>
+<style>
+  :root {
+    --bg: #0B0D10; --panel: #161A20; --panel2: #12161C; --line: #232831;
+    --muted: #8A93A0; --text: #F2F4F7; --yellow: #FFC940; --blue: #4DA3FF;
+  }
+  html, body {
+    margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); color: var(--text);
+    font-family: -apple-system, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  }
+  .brand { position: absolute; left: 80px; top: 48px; display: flex; align-items: center; gap: 16px; }
+  .brand b { font-size: 34px; font-weight: 900; letter-spacing: 1px; }
+  .brand .dot { width: 18px; height: 18px; border-radius: 50%; background: var(--yellow); }
+  .brand .pill { font-size: 18px; color: var(--muted); border: 1.5px solid var(--line); border-radius: 999px; padding: 6px 14px; }
+  #map { position: absolute; left: 0; top: 0; width: 1240px; height: 920px; }
+  #caption {
+    position: absolute; left: 80px; top: 930px; width: 1180px; height: 110px;
+    display: flex; align-items: center; font-size: 40px; font-weight: 700; line-height: 1.25;
+  }
+  #caption.quote { color: var(--yellow); font-size: 36px; }
+
+  #phone {
+    position: absolute; left: 1360px; top: 90px; width: 430px; height: 900px; border-radius: 68px;
+    background: #000; box-shadow: 0 0 0 3px #2A2F38, 0 40px 120px rgba(0,0,0,.6);
+  }
+  #screen {
+    position: absolute; inset: 14px; border-radius: 56px; background: var(--bg); overflow: hidden;
+    display: flex; flex-direction: column; gap: 14px; padding: 64px 20px 36px; box-sizing: border-box;
+  }
+  .island { position: absolute; left: 50%; top: 11px; width: 120px; height: 34px; margin-left: -60px; border-radius: 20px; background: #000; }
+  .status { position: absolute; top: 18px; left: 34px; right: 34px; display: flex; justify-content: space-between; font-size: 16px; font-weight: 600; }
+  .header { display: flex; justify-content: flex-end; min-height: 32px; align-items: center; }
+  .gear { color: var(--text); font-size: 18px; opacity: .35; width: 32px; text-align: center; }
+  .card {
+    flex: 1; position: relative; border-radius: 28px; background: var(--panel); padding: 24px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; box-sizing: border-box;
+  }
+  .card.active { background: var(--yellow); }
+  .symbol { font-size: 120px; line-height: 130px; color: var(--bg); font-weight: 800; }
+  .zone { font-size: 52px; color: var(--bg); font-weight: 900; letter-spacing: 2px; }
+  .instruction { font-size: 24px; line-height: 32px; color: var(--bg); text-align: center; font-weight: 600; }
+  .hint { font-size: 14px; color: #3D3214; margin-top: 8px; }
+  .searching { font-size: 26px; line-height: 36px; color: var(--muted); font-weight: 600; text-align: center; }
+  .bar { position: absolute; left: 24px; right: 24px; bottom: 24px; height: 10px; border-radius: 5px; background: rgba(138,147,160,.25); overflow: hidden; }
+  .bar div { height: 100%; border-radius: 5px; background: var(--muted); }
+  .card.active .bar div { background: var(--bg); }
+  #tap { position: absolute; border-radius: 50%; pointer-events: none; }
+  #finger { position: absolute; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; background: rgba(242,244,247,.55); box-shadow: 0 0 0 3px rgba(255,255,255,.8); }
+  #speaker { position: absolute; left: 1250px; top: 470px; font-size: 64px; }
+
+  .overlay {
+    position: absolute; inset: 0; background: var(--bg); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 28px; text-align: center;
+  }
+  .overlay h1 { margin: 0; font-size: 128px; font-weight: 900; letter-spacing: 4px; }
+  .overlay h1 span { color: var(--yellow); }
+  .overlay p { margin: 0; font-size: 42px; color: var(--muted); font-weight: 600; }
+  .overlay small { font-size: 28px; color: var(--muted); }
+  .pills { display: flex; gap: 20px; }
+  .pills div { font-size: 34px; font-weight: 700; border: 2px solid var(--yellow); color: var(--yellow); border-radius: 999px; padding: 14px 30px; }
+</style>
+</head>
+<body>
+  <div class="brand"><div class="dot"></div><b>Morsy</b><div class="pill">Схема на станция</div></div>
+
+  <svg id="map" viewBox="0 0 1240 920">
+    <!-- Вестибюл -->
+    <rect x="80" y="150" width="1080" height="230" rx="24" fill="#12161C" stroke="#232831" stroke-width="2"/>
+    <text x="110" y="196" fill="#8A93A0" font-size="24" font-weight="600">Вестибюл</text>
+    <text x="110" y="350" fill="#8A93A0" font-size="22">← Вход</text>
+    <!-- Стълби -->
+    <rect x="730" y="378" width="120" height="224" fill="#12161C" stroke="#232831" stroke-width="2"/>
+    <g id="steps" stroke="#2C323C" stroke-width="3"></g>
+    <text x="872" y="498" fill="#8A93A0" font-size="22">Стълби</text>
+    <!-- Перон -->
+    <rect x="80" y="600" width="1080" height="200" rx="24" fill="#12161C" stroke="#232831" stroke-width="2"/>
+    <text x="110" y="646" fill="#8A93A0" font-size="24" font-weight="600">Перон</text>
+    <!-- Релси и влак -->
+    <line x1="80" y1="830" x2="1160" y2="830" stroke="#232831" stroke-width="4"/>
+    <line x1="80" y1="896" x2="1160" y2="896" stroke="#232831" stroke-width="4"/>
+    <rect x="120" y="836" width="860" height="54" rx="18" fill="#1E2530"/>
+    <g id="windows" fill="#2C3644"></g>
+    <text x="1000" y="872" fill="#8A93A0" font-size="20">Посока Младост →</text>
+
+    <g id="beacons"></g>
+    <line id="signal" stroke-width="3" stroke-dasharray="10 8" stroke-linecap="round"/>
+    <g id="walker">
+      <circle id="halo" r="34" fill="none" stroke-width="4"/>
+      <circle r="20" fill="#F2F4F7"/>
+      <rect x="-6" y="-11" width="12" height="20" rx="3" fill="#0B0D10"/>
+    </g>
+  </svg>
+
+  <div id="caption"></div>
+  <div id="speaker">🔊</div>
+
+  <div id="phone">
+    <div id="screen">
+      <div class="island"></div>
+      <div class="status"><span>9:41</span><span>●●●</span></div>
+      <div class="header"><div class="gear">⚙︎</div></div>
+      <div class="card" id="card">
+        <div id="cardBody"></div>
+        <div class="bar"><div id="barFill"></div></div>
+      </div>
+    </div>
+    <div id="tap"></div>
+    <div id="finger"></div>
+  </div>
+
+  <div class="overlay" id="intro">
+    <h1><span>Morsy</span></h1>
+    <p>Гласова навигация в метрото<br>за хора с нарушено зрение</p>
+    <small>Прототип</small>
+  </div>
+  <div class="overlay" id="outro">
+    <h1><span>Morsy</span></h1>
+    <div class="pills"><div>Работи под земята</div><div>Без GPS и интернет</div><div>Указания на български</div></div>
+    <small>Прототип</small>
+  </div>
+
+<script>
+// Everything on screen is a pure function of the time t (seconds), so render.mjs can step frame by frame.
+const ZONES = {
+  stalbi: { name: 'Стълби', symbol: '↓', x: 800, y: 330,
+    instruction: 'Стълби надолу, три метра пред вас. Перонът е вдясно.' },
+  peron: { name: 'Перон', symbol: '🚇', x: 420, y: 700,
+    instruction: 'Перон, посока Младост. Влакът спира пред вас.' },
+};
+const R = 150;               // zone radius (enter)
+const EXIT = R * 1.25;       // hysteresis, like the app's exit threshold
+const NEAR = R * 2.2;        // "Маякът е наблизо…"
+
+const SPEECH = [
+  { zone: 'stalbi', tap: 14.6, at: 14.8, end: 18.7, file: 'audio/stalbi.aiff' },
+  { zone: 'peron', tap: 25.8, at: 26.0, end: 29.6, file: 'audio/peron.aiff' },
+];
+window.TIMELINE = { duration: 35, fps: 30, audio: SPEECH.map(s => ({ file: s.file, at: s.at })) };
+
+// [time, x, y]; the walker eases between consecutive points.
+const PATH = [
+  [0, 170, 265], [4, 170, 265], [12.5, 680, 300], [19.2, 680, 300],
+  [20.5, 790, 390], [23.0, 790, 620], [25.0, 540, 745],
+];
+const CAPTIONS = [
+  [3.6, 8.3, 'В станцията има малки Bluetooth маяци.<br>Всеки излъчва свой сигнал.'],
+  [8.5, 12.4, 'Телефонът засича най-близкия маяк —<br>без GPS и без интернет.'],
+  [12.6, 14.7, 'Едно докосване на екрана — и чувате указанието.'],
+  [14.8, 19.0, '🔊 „' + ZONES.stalbi.instruction + '“', 'quote'],
+  [19.3, 25.6, 'Докато вървите, следващият маяк поема.'],
+  [26.0, 30.0, '🔊 „' + ZONES.peron.instruction + '“', 'quote'],
+];
+
+const $ = id => document.getElementById(id);
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const ease = u => u < .5 ? 2 * u * u : 1 - (-2 * u + 2) ** 2 / 2;
+const fade = (t, a, b, f = .35) => clamp(Math.min((t - a) / f, (b - t) / f));
+
+for (let y = 398; y < 600; y += 20) $('steps').insertAdjacentHTML('beforeend', `<line x1="736" x2="844" y1="${y}" y2="${y}"/>`);
+for (let x = 150; x < 960; x += 70) $('windows').insertAdjacentHTML('beforeend', `<rect x="${x}" y="848" width="44" height="22" rx="5"/>`);
+for (const [id, z] of Object.entries(ZONES)) {
+  $('beacons').insertAdjacentHTML('beforeend', `
+    <circle id="zone-${id}" cx="${z.x}" cy="${z.y}" r="${R}" stroke-width="2.5" stroke-dasharray="8 8"/>
+    <g id="rings-${id}" fill="none" stroke="#4DA3FF" stroke-width="3"></g>
+    <rect x="${z.x - 16}" y="${z.y - 16}" width="32" height="32" rx="9" fill="#4DA3FF"/>
+    <text x="${z.x}" y="${z.y + 7}" fill="#0B0D10" font-size="20" font-weight="900" text-anchor="middle">ᛒ</text>
+    <text x="${z.x + 28}" y="${z.y - 22}" fill="#F2F4F7" font-size="22" font-weight="700">Маяк · ${z.name}</text>`);
+}
+
+function walkerAt(t) {
+  if (t <= PATH[0][0]) return PATH[0].slice(1);
+  for (let i = 1; i < PATH.length; i++) {
+    const [t1, x1, y1] = PATH[i], [t0, x0, y0] = PATH[i - 1];
+    if (t <= t1) { const u = ease((t - t0) / (t1 - t0)); return [x0 + (x1 - x0) * u, y0 + (y1 - y0) * u]; }
+  }
+  return PATH[PATH.length - 1].slice(1);
+}
+
+function nearest(x, y) {
+  let best = null;
+  for (const [id, z] of Object.entries(ZONES)) {
+    const d = Math.hypot(z.x - x, z.y - y);
+    if (!best || d < best.d) best = { id, d };
+  }
+  return best;
+}
+
+// Zone with enter/exit hysteresis, replayed from 0 so any frame can be rendered on its own.
+function activeZoneAt(t) {
+  let active = null;
+  for (let s = 0; s <= t; s += 1 / 60) {
+    const [x, y] = walkerAt(s);
+    if (active && Math.hypot(ZONES[active].x - x, ZONES[active].y - y) > EXIT) active = null;
+    const n = nearest(x, y);
+    if (!active && n.d < R) active = n.id;
+  }
+  return active;
+}
+
+window.render = function (t) {
+  const [x, y] = walkerAt(t);
+  const active = activeZoneAt(t);
+  const n = nearest(x, y);
+  const focus = active || n.id, fz = ZONES[focus];
+  const d = Math.hypot(fz.x - x, fz.y - y);
+  const prox = clamp((NEAR * 1.2 - d) / (NEAR * 1.2 - R * 0.6));
+
+  // Map
+  $('walker').setAttribute('transform', `translate(${x} ${y})`);
+  $('halo').setAttribute('stroke', active ? '#FFC940' : 'rgba(242,244,247,.25)');
+  for (const [id, z] of Object.entries(ZONES)) {
+    const on = id === active;
+    $('zone-' + id).setAttribute('fill', on ? 'rgba(255,201,64,.12)' : 'rgba(77,163,255,.04)');
+    $('zone-' + id).setAttribute('stroke', on ? '#FFC940' : 'rgba(77,163,255,.35)');
+    let rings = '';
+    for (let k = 0; k < 3; k++) {
+      const u = (t * 0.7 + k / 3) % 1;
+      rings += `<circle cx="${z.x}" cy="${z.y}" r="${20 + u * R * 1.1}" opacity="${(1 - u) * 0.7}"/>`;
+    }
+    $('rings-' + id).innerHTML = rings;
+  }
+  const sig = $('signal');
+  sig.setAttribute('x1', x); sig.setAttribute('y1', y); sig.setAttribute('x2', fz.x); sig.setAttribute('y2', fz.y);
+  sig.setAttribute('stroke', active ? '#FFC940' : '#4DA3FF');
+  sig.setAttribute('stroke-dashoffset', -t * 40);
+  sig.setAttribute('opacity', d < NEAR ? 0.35 + 0.65 * prox : 0);
+
+  // Phone
+  const card = $('card');
+  card.classList.toggle('active', !!active);
+  if (active) {
+    const z = ZONES[active];
+    $('cardBody').innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+      <div class="symbol">${z.symbol}</div><div class="zone">${z.name.toUpperCase()}</div>
+      <div class="instruction">${z.instruction}</div><div class="hint">Докоснете, за да чуете указанието</div></div>`;
+  } else {
+    $('cardBody').innerHTML = `<div class="searching">${d < NEAR ? 'Маякът е наблизо…' : 'Търсене на маяк…'}</div>`;
+  }
+  $('barFill').style.width = (d < NEAR || active ? prox * 100 : 0) + '%';
+
+  // Tap on the card, then the spoken instruction
+  const cx = 215, cy = 770;
+  const tap = SPEECH.find(s => t > s.tap - 0.6 && t < s.tap + 0.7);
+  $('finger').style.left = cx + 'px'; $('finger').style.top = cy + 'px';
+  $('finger').style.opacity = tap ? fade(t, tap.tap - 0.6, tap.tap + 0.4, 0.25) : 0;
+  const u = tap ? clamp((t - tap.tap) / 0.6) : 1;
+  Object.assign($('tap').style, { left: cx - 120 * u + 'px', top: cy - 120 * u + 'px', width: 240 * u + 'px',
+    height: 240 * u + 'px', border: '4px solid rgba(255,255,255,.9)', opacity: tap && t >= tap.tap ? 1 - u : 0 });
+  const speaking = SPEECH.find(s => t >= s.at && t <= s.end);
+  $('speaker').style.opacity = speaking ? 1 : 0;
+  $('speaker').style.transform = `scale(${1 + 0.12 * Math.abs(Math.sin(t * 9))})`;
+
+  // Captions
+  const c = CAPTIONS.find(([a, b]) => t >= a - 0.35 && t <= b + 0.35);
+  const el = $('caption');
+  el.innerHTML = c ? c[2] : '';
+  el.className = c && c[3] === 'quote' ? 'quote' : '';
+  el.style.opacity = c ? fade(t, c[0] - 0.35, c[1] + 0.35) : 0;
+
+  // Title and end cards
+  $('intro').style.opacity = 1 - clamp((t - 2.8) / 0.7);
+  $('outro').style.opacity = clamp((t - 30.4) / 0.6);
+};
+
+window.render(+(new URLSearchParams(location.search).get('t') || 0));
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Node
+node_modules/
+
+# Local data written by `main.py calibrate`
+calibration.csv
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Env files
+.env
+.env.*
+!.env.example
