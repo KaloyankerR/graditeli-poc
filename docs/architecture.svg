@@ -93,7 +93,7 @@
 <text x="224.0" y="755.25" font-size="14" fill="#1e1e1e" text-anchor="middle">Eddystone only</text>
 <rect x="697.8" y="594.25" width="104.4" height="21.5" fill="#ffffff"/>
 <text x="750.0" y="610.25" font-size="14" fill="#1e1e1e" text-anchor="middle">ported to TS</text>
-<text x="56" y="928.0" font-size="18" fill="#495057" text-anchor="start">GitHub: KaloyankerR/graditeli-poc (private)</text>
+<text x="56" y="928.0" font-size="18" fill="#495057" text-anchor="start">GitHub: KaloyankerR/graditeli-poc (public)</text>
 <text x="210.0" y="980.25" font-size="14" fill="#1e1e1e" text-anchor="middle" font-weight="bold">GitHub Actions CI</text>
 <text x="210.0" y="997.75" font-size="14" fill="#1e1e1e" text-anchor="middle">on every PR + push to main</text>
 <text x="210.0" y="1015.25" font-size="14" fill="#1e1e1e" text-anchor="middle">mac: ruff, pytest (3.11, 3.13)</text>

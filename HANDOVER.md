@@ -4,7 +4,7 @@ Status as of **2026-11-26**. This document is for the people taking over the pro
 was built and why, what works, what doesn't, and where to go next. For setup and commands, see
 [README.md](README.md) and the READMEs in each folder.
 
-> **Previous owner:** _name and contact go here_ · **Repository:** github.com/KaloyankerR/graditeli-poc (private)
+> **Previous owner:** _name and contact go here_ · **Repository:** [github.com/KaloyankerR/graditeli-poc](https://github.com/KaloyankerR/graditeli-poc) (public)
 
 ## 1. The idea in one paragraph
 
@@ -104,6 +104,6 @@ Roughly in priority order:
 
 ## 7. Access to hand over
 
-- [ ] GitHub: add the new owners as collaborators, or transfer the repository.
+- [ ] GitHub: add the new owners as collaborators (the repo is public, but pushing needs an invite), or transfer the repository.
 - [ ] Apple: each developer signs with their own team, or set up a shared paid team.
 - [ ] Beacon phones: which devices were used and their nRF Connect advertiser setup (see [mac/README.md](mac/README.md)).
