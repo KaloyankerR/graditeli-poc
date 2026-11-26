@@ -20,8 +20,7 @@ def clock():
 
 @pytest.fixture
 def engine(clock):
-    return ZoneEngine(enter_rssi=-65, exit_rssi=-75, window=5, stale_sec=3,
-                      switch_margin_db=5, clock=clock)
+    return ZoneEngine(enter_rssi=-65, exit_rssi=-75, window=5, stale_sec=3, switch_margin_db=5, clock=clock)
 
 
 def feed(engine, clock, instance, values, dt=0.1):
@@ -79,10 +78,10 @@ def test_no_duplicate_announcements(engine, clock):
 def test_switch_requires_margin(engine, clock):
     feed(engine, clock, A, [-60] * 5)
     assert engine.evaluate() == A
-    feed(engine, clock, B, [-57] * 5)          # only 3 dB stronger
+    feed(engine, clock, B, [-57] * 5)  # only 3 dB stronger
     assert engine.evaluate() is None
     assert engine.current == A
-    feed(engine, clock, B, [-50] * 5)          # 10 dB stronger
+    feed(engine, clock, B, [-50] * 5)  # 10 dB stronger
     assert engine.evaluate() == B
     assert engine.current == B
 

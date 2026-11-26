@@ -24,8 +24,10 @@ HERE = Path(__file__).parent
 ZONES_PATH = HERE / "zones.json"
 CALIBRATION_PATH = HERE / "calibration.csv"
 TARGET_ENTER_M = 3  # announce roughly this far from the beacon
-VOICE_MISSING = ("WARNING: voice '{}' not installed. System Settings → Accessibility → "
-                 "Spoken Content → System Voice → Manage Voices… → Bulgarian.")
+VOICE_MISSING = (
+    "WARNING: voice '{}' not installed. System Settings → Accessibility → "
+    "Spoken Content → System Voice → Manage Voices… → Bulgarian."
+)
 
 
 def report_every_advertisement():
@@ -39,14 +41,14 @@ def report_every_advertisement():
 
     async def start_scan(self, service_uuids):
         self.central_manager.scanForPeripheralsWithServices_options_(
-            None, {CBCentralManagerScanOptionAllowDuplicatesKey: True})
+            None, {CBCentralManagerScanOptionAllowDuplicatesKey: True}
+        )
 
     CentralManagerDelegate.start_scan = start_scan
 
 
 def make_engine(args):
-    return ZoneEngine(args.enter_rssi, args.exit_rssi, args.window, args.stale_sec,
-                      args.switch_margin_db)
+    return ZoneEngine(args.enter_rssi, args.exit_rssi, args.window, args.stale_sec, args.switch_margin_db)
 
 
 def volume(args, rssi):
@@ -107,8 +109,10 @@ async def calibrate(args, zones):
     lines = asyncio.Queue()
     loop = asyncio.get_running_loop()
     loop.add_reader(sys.stdin, lambda: lines.put_nowait(sys.stdin.readline()))
-    print("Type a label (e.g. 1m, 3m, 5m) and press Enter to record a sample.\n"
-          "Empty line + Enter finishes. (Output keeps scrolling while you type.)")
+    print(
+        "Type a label (e.g. 1m, 3m, 5m) and press Enter to record a sample.\n"
+        "Empty line + Enter finishes. (Output keeps scrolling while you type.)"
+    )
     try:
         async with BleakScanner(detection_callback=on_adv):
             while True:
@@ -157,14 +161,15 @@ def print_suggestions(samples, zones):
 
     print("\n--- Suggestions ---")
     for instance, per_label in sorted(by_beacon.items()):
-        means = {l: sum(v) / len(v) for l, v in per_label.items()}
+        means = {label: sum(v) / len(v) for label, v in per_label.items()}
         labels = sorted(means, key=distance)
-        print(f"{zone_name(zones, instance)}: " +
-              ", ".join(f"{l}={means[l]:.1f}" for l in labels))
+        print(
+            f"{zone_name(zones, instance)}: " + ", ".join(f"{label}={means[label]:.1f}" for label in labels)
+        )
         if len(labels) < 2:
             print("  need at least two distances for a suggestion")
             continue
-        enter = round(means[min(labels, key=lambda l: abs(distance(l) - TARGET_ENTER_M))])
+        enter = round(means[min(labels, key=lambda label: abs(distance(label) - TARGET_ENTER_M))])
         exit_ = min(round(means[labels[-1]]), enter - 5)
         print(f"  suggested: --enter-rssi {enter} --exit-rssi {exit_}")
 
@@ -183,8 +188,7 @@ async def debug(args, zones):
         while True:
             await asyncio.sleep(args.beep_sec)
             t = time.monotonic()
-            near = [(rssi, i) for i, (seen, rssi) in last_close.items()
-                    if t - seen <= args.stale_sec]
+            near = [(rssi, i) for i, (seen, rssi) in last_close.items() if t - seen <= args.stale_sec]
             if near:
                 rssi, instance = max(near)
                 vol = volume(args, rssi)

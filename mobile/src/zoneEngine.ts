@@ -1,4 +1,4 @@
-/** Zone detection: RSSI smoothing, hysteresis and stale handling. Port of ../zone_engine.py. */
+/** Zone detection: RSSI smoothing, hysteresis and stale handling. Port of mac/zone_engine.py. */
 
 export type ZoneSettings = {
   enterRssi: number; // dBm: smoothed RSSI above this enters a zone

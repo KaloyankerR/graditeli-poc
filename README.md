@@ -1,85 +1,78 @@
-# Metro BLE voice navigation – prototype
+# Graditeli PoC: metro beacon voice navigation
 
-The Mac stands in for the blind user's phone. Android phones running nRF Connect act as
-Eddystone-UID beacons. When the Mac gets close to a beacon, it reads that beacon's instruction
-aloud in Bulgarian (voice: Daria). Everything runs offline.
+A proof of concept for helping blind and visually impaired passengers find their way in the Sofia
+metro. Bluetooth Low Energy (BLE) beacons are placed at points of interest (stairs, platform,
+escalator, exit). When the passenger's phone comes close to one, it speaks a short instruction in
+Bulgarian, such as *"Стълби надолу, три метра пред вас. Перонът е вдясно."*
 
-| Instance       | Zone   | Instruction |
-|----------------|--------|-------------|
-| `000000000001` | Стълби | Стълби надолу, три метра пред вас. Перонът е вдясно. |
-| `000000000002` | Перон  | Перон, посока Младост. Влакът спира пред вас. |
+Everything runs offline: no server, no internet, no accounts.
 
-## Setup
+## Architecture
 
-```bash
-cd graditeli-poc   # repo root
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-pytest -q
-```
+![Architecture: beacons, iPhone app, Mac prototype, repo and CI](docs/architecture.svg)
 
-### macOS Bluetooth permission
-System Settings → Privacy & Security → Bluetooth → turn on **Terminal** (or iTerm / VS Code,
-whichever app runs the script). If scanning finds nothing and shows no error, this permission is
-usually what's missing. Restart the terminal after you change it.
+The editable source is [`docs/architecture.excalidraw`](docs/architecture.excalidraw). Open it at
+[excalidraw.com](https://excalidraw.com) (menu → Open) or with the Excalidraw extension for VS Code.
+After changing it, export it as SVG over `docs/architecture.svg` so this picture stays current.
 
-### Bulgarian voice (Daria)
-System Settings → Accessibility → Spoken Content → System Voice → **Manage Voices…** →
-Bulgarian → tick **Daria**. Check it with:
+New to the project? Read [HANDOVER.md](HANDOVER.md) first: it covers what was built, what works,
+the known limitations and the open next steps.
 
-```bash
-python main.py --voice-test
-```
+## Repository layout
 
-## nRF Connect beacon setup (each Android phone)
+| Folder | What it is | Stack | Start here |
+|---|---|---|---|
+| [`mobile/`](mobile/) | **Main app.** iPhone app "Метро маяк" (Metromayak): scans for beacons, shows the zone full-screen and speaks it. | Expo SDK 55 / React Native / TypeScript, plus a local Swift CoreBluetooth module | [mobile/README.md](mobile/README.md) |
+| [`mac/`](mac/) | First prototype: a Mac plays the phone's role. Also has the beacon setup guide and `calibrate` / `debug` tools. | Python 3.11+, [bleak](https://github.com/hbldh/bleak), macOS `say` | [mac/README.md](mac/README.md) |
+| [`video/`](video/) | Renders the 35-second "Morsy" demo video from `demo.html` (Playwright + ffmpeg). Not part of the product. | Node, Playwright, ffmpeg | `npm install && npm run render` |
 
-1. Open the **Advertiser** tab, tap **+** to add a new advertising packet.
-2. Options: **Legacy advertising** (turn *Advertising Extension* off), *Include Tx Power*
-   **off**, *Include device name* **off** (a legacy packet only holds 31 bytes).
-3. Advertising data → Add record → **Service UUID** → `FEAA` (16-bit).
-4. Add record → **Service Data** → UUID `FEAA`, data:
-   - Stairs: `00C500000000000000000000000000000001`
-   - Platform: `00C500000000000000000000000000000002`
+Both receivers use the same zone logic: [`mac/zone_engine.py`](mac/zone_engine.py) is the original,
+and [`mobile/src/zoneEngine.ts`](mobile/src/zoneEngine.ts) is a port with a faster entry window and a
+smoothing that ignores short drops (see [HANDOVER.md](HANDOVER.md#how-zone-detection-works)).
 
-   (`00` = UID frame, `C5` = Tx power, 10 zero bytes = namespace, last 6 bytes = instance.)
-5. Set the interval to the fastest option and Tx power to high, then start advertising and keep
-   the screen on.
+## Quick start
 
-macOS hides iBeacon packets and shows random device UUIDs instead of MAC addresses, so beacons
-are identified only by their Eddystone instance.
+You need beacons first. Any Android phone with **nRF Connect** can act as one. Setup is in
+[mac/README.md → nRF Connect beacon setup](mac/README.md#nrf-connect-beacon-setup-each-android-phone).
 
-## Usage
+**iPhone app**: needs a Mac with Xcode and an iPhone. Full steps are in [mobile/README.md](mobile/README.md).
 
 ```bash
-python main.py debug        # beeps every 1 s (louder = closer) while RSSI > --enter-rssi; logs each beep
-python main.py calibrate    # smoothed RSSI; type a label (1m/3m/5m) + Enter to save to calibration.csv
-python main.py run          # scan + zones + speech
-python main.py run --enter-rssi -68 --exit-rssi -78   # override config.py values
+cd mobile
+npm install
+npm test
 ```
 
-Defaults are in `config.py`: ENTER −65, EXIT −75, WINDOW 3, STALE 5 s, tick 0.5 s, switch margin
-5 dB.
+**Mac prototype**:
 
-Speech gets louder the closer you are: volume runs from `--min-volume` (0.2) at EXIT RSSI or
-weaker up to full volume at `--near-rssi` (−50) or stronger.
+```bash
+cd mac
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements-dev.txt
+python main.py debug      # beeps when a beacon is near
+python main.py run        # speaks zone instructions
+```
 
-Calibration suggests ENTER as the mean RSSI at the label closest to 3 m. It suggests EXIT as the
-mean at the farthest label, kept at least 5 dB below ENTER.
+## Checks and CI
 
-## Test plan
+GitHub Actions ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs on every pull request and
+on pushes to `main`. Run the same checks locally before you push:
 
-1. **debug**: start one beacon and run `python main.py debug`. You should see lines like
-   `rssi= -58  00 c5 00 … 00 01  -> Стълби`. If nothing shows up, check the Bluetooth
-   permission and the nRF Connect records.
-2. **calibrate at 1 / 3 / 5 m**: run `python main.py calibrate`. Hold the Mac at 1 m, wait about
-   3 s, type `1m` and press Enter. Repeat at `3m` and `5m`, then press Enter on an empty line.
-   Write down the suggested `--enter-rssi` / `--exit-rssi`.
-3. **run**: run `python main.py run` with the suggested values. Walk toward the beacon. You
-   should hear the instruction once, at about 3 m, and the status line should show `<< NEW`.
-4. **walk between two beacons**: put the stairs and platform phones about 10 m apart and walk
-   between them. Each zone should be announced once when you enter it. Standing in the middle
-   should not cause flapping, and you should hear nothing new until you leave a zone and come
-   back.
-5. **Wi-Fi off**: turn off Wi-Fi (and unplug Ethernet) and repeat step 4. The behaviour should
-   be identical, which confirms the prototype is fully offline.
+| | Command (from the folder) |
+|---|---|
+| `mac/` | `ruff check . && ruff format --check . && pytest -q` |
+| `mobile/` | `npm run lint && npm run format:check && npm run typecheck && npm test` |
+
+Format code with `ruff format .` (Python) and `npm run format` (mobile).
+
+CI does not build the iOS app. That needs a macOS runner and Apple signing; see
+[HANDOVER.md → Next steps](HANDOVER.md#next-steps).
+
+## Working on the code
+
+- Work on a branch and open a pull request into `main`. CI must be green before merging.
+- Zones (texts and symbols) are in [`mobile/src/zones.ts`](mobile/src/zones.ts) and [`mac/zones.json`](mac/zones.json).
+  Keep zones `01` and `02` the same in both files.
+- In `mobile/`, add packages with `npx expo install <package>`, not `npm install`, so versions match the Expo SDK.
+- `mobile/ios/` is generated by `npx expo prebuild` and is not committed. Native code lives in
+  [`mobile/modules/beacon-scanner/`](mobile/modules/beacon-scanner/).

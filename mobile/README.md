@@ -1,10 +1,10 @@
 # Метро маяк (iPhone)
 
-iPhone version of the beacon prototype in `..`. The iPhone listens for the Eddystone-UID beacons
-(Android phones running nRF Connect, see `../README.md`) and for iPhone beacons (nRF Connect →
+iPhone version of the Mac beacon prototype in `../mac`. The iPhone listens for the Eddystone-UID beacons
+(Android phones running nRF Connect, see `../mac/README.md`) and for iPhone beacons (nRF Connect →
 Peripheral, service UUID `6D657472-6F62-6561-636F-6E00000000NN` for zone `NN`, app in the foreground), shows the zone full-screen and speaks the
 instruction in Bulgarian. Zones are in `src/zones.ts`, the zone logic in `src/zoneEngine.ts`
-(port of `../zone_engine.py`), and the Bluetooth scanner is a local Swift module in
+(port of `../mac/zone_engine.py`), and the Bluetooth scanner is a local Swift module in
 `modules/beacon-scanner`.
 
 ## Build and install (Release, runs without the Mac)
@@ -43,10 +43,10 @@ xcrun devicectl device process launch --device <UDID> com.kalo.metrobeacon
   **Автоматичен глас при влизане** to speak on entering a zone. Leaving a zone stops the speech.
 - Smoothing is the mean of the strongest half of the recent packets, so short drops from a body or
   wall in the way don't push the signal down. Entering uses the last 4 packets (~0.5 s) to react fast;
-  leaving uses the last 8 (~1 s) so it doesn't flicker. This differs from the plain mean in `../zone_engine.py`.
+  leaving uses the last 8 (~1 s) so it doesn't flicker. This differs from the plain mean in `../mac/zone_engine.py`.
 - Tap the yellow card to repeat the instruction.
 - Bulgarian voice: Settings → Accessibility → Spoken Content → Voices → Bulgarian → Daria.
 
 ## Checks
 
-`npx tsc --noEmit` · `npm test` · `npx expo-doctor`
+`npm run lint` · `npm run format:check` · `npm run typecheck` · `npm test` · `npx expo-doctor`

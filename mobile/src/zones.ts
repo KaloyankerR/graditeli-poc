@@ -1,4 +1,4 @@
-/** Beacon instance id -> zone. 01 and 02 match ../zones.json; 03 and 04 are app-only demo zones. */
+/** Beacon instance id -> zone. 01 and 02 match mac/zones.json; 03 and 04 are app-only demo zones. */
 export type Zone = { name: string; symbol: string; instruction: string };
 
 export const ZONES: Record<string, Zone> = {
